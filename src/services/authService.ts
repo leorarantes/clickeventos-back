@@ -26,7 +26,7 @@ export async function signIn(user: SignInData) {
     // validate password
     const encryptedPassword: string = existingUser.password;
     if(!bcrypt.compareSync(password, encryptedPassword)) {
-        throw { type: "error_invalid_password", message: "Invalid password." };
+        throw { type: "error_unauthorized", message: "Invalid password." };
     }
 
     // get token

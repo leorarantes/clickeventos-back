@@ -2,13 +2,13 @@ import supertest from 'supertest';
 
 import app from "../../src/app";
 import prisma from "../../src/database.js";
-import { createUser, getRandomUser } from '../factories/usersFactory';
+import { createUser, generateRandomUser } from '../factories/usersFactory';
 
 const agent = supertest(app);
 
 let randomUsers = new Array(2);
-randomUsers[0] = getRandomUser();
-randomUsers[1] = getRandomUser();
+randomUsers[0] = generateRandomUser().create;
+randomUsers[1] = generateRandomUser().create;
 
 describe("POST /sign-up", () => {
     it("given valid body, create user", async () => {
