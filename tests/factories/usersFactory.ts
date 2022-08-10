@@ -34,7 +34,7 @@ export async function createUser(user: SignUpData) {
         data: {
             name: user.name,
             email: user.email,
-            password: user.password
+            password: bcrypt.hashSync(user.password, 14)
         }
     });
 }

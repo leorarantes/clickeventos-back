@@ -6,63 +6,78 @@ import { createUser, generateRandomUser } from '../factories/usersFactory';
 
 const agent = supertest(app);
 
-let randomUsers = new Array(2);
-randomUsers[0] = generateRandomUser().create;
-randomUsers[1] = generateRandomUser().create;
+let generatedUsers = new Array();
+function insertAndGet() {
+    const user = generateRandomUser();
+    generatedUsers.push(user.create);
+    return generatedUsers[generatedUsers.length-1];
+}
 
 describe("POST /sign-up", () => {
     it("given valid body, create user", async () => {
+        const user = insertAndGet();
         const response = await agent
             .post("/sign-up")
-            .send(randomUsers[0]);
+            .send(user);
         expect(response.status).toBe(200);
     });
 
     it("given email already in use, fail to create user", async () => {
-        await createUser(randomUsers[1]);
-        const response = await agent.post("/sign-up").send(randomUsers[1]);
+        const user = insertAndGet();
+        await createUser(user);
+        const response = await agent
+            .post("/sign-up")
+            .send(user);
         expect(response.status).toBe(409);
     });
 
     it("given invalid body, fail to create user", async () => {
-        let emptyNameResponse = {...randomUsers[0]};
-        emptyNameResponse.name= "";
         const response = await agent
             .post("/sign-up")
-            .send(emptyNameResponse);
+            .send({...generateRandomUser().create, name: ""});
         expect(response.status).toBe(422);
     });
 
     it("given invalid body, fail to create user", async () => {
-        let invalidEmailResponse = {...randomUsers[0]};
-        invalidEmailResponse.email= "invalid_email";
         const response = await agent
             .post("/sign-up")
-            .send(invalidEmailResponse);
+            .send({...generateRandomUser().create, email: "invalid_email"});
         expect(response.status).toBe(422);
     });
     
     it("given invalid body, fail to create user", async () => {
-        let emptyPasswordResponse = {...randomUsers[0]};
-        emptyPasswordResponse.name= "";
         const response = await agent
             .post("/sign-up")
-            .send(emptyPasswordResponse);
+            .send({...generateRandomUser().create, password: ""});
         expect(response.status).toBe(422);
     });
 
     it("given invalid body, fail to create user", async () => {
-        let invalidConfirmPasswordResponse = {...randomUsers[0]};
-        invalidConfirmPasswordResponse.confirmPassword= "invalid_confirm_password";
         const response = await agent
             .post("/sign-up")
-            .send(invalidConfirmPasswordResponse);
+            .send({...generateRandomUser().create, confirmPassword: "invalid_confirm_password"});
         expect(response.status).toBe(422);
     });
 });
 
+describe("POST /sign-in", () => {
+    it("given valid email and password, receive token", async () => {
+        const user = insertAndGet();
+        await createUser(user);
+        const response = await agent.post("/sign-in").send({ email: user.email, password: user.password });
+        expect(response.status).toBe(201);
+    });
+
+    it("given invalid email and password, fail to receive token", async () => {
+        const user = insertAndGet();
+        await createUser(user);
+        const response = await agent.post("/sign-in").send({ email: user.email, password: "invalid_password" });
+        expect(response.status).toBe(401);
+    });
+});
+
 afterAll(async () => {
-    randomUsers.forEach(async (user) => {
+    generatedUsers.forEach(async (user) => {
         await prisma.$executeRaw`DELETE FROM users WHERE email = ${user.email}`;
     });
 });
