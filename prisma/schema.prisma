@@ -15,21 +15,70 @@ model Users {
   name        String
   email       String    @unique
   password    String
-  events      Events[]
   createdAt   DateTime  @default(now())
+  events      Events[]
 
   @@map("users")
 }
 
 model Events {
-  id          Int      @id @default(autoincrement())
-  name        String
-  price       Int
-  date        String
-  description String
-  manager     Users    @relation(fields: [managerId], references: [id])
-  managerId   Int
-  createdAt   DateTime @default(now())
+  id                 Int       @id @default(autoincrement())
+  name               String
+  price              Float
+  dateTime           DateTime
+  description        String
+  manager            Users     @relation(fields: [managerId], references: [id])
+  managerId          Int
+  createdAt          DateTime  @default(now())
+  eventsPhotos       EventsPhotos[]
+  eventsPix          EventsPix[]
+  eventsBankAccounts EventsBankAccounts[]
 
   @@map("events")
 }
+
+model EventsPhotos {
+  id          Int       @id @default(autoincrement())
+  photo       String    @unique
+  event       Events    @relation(fields: [eventId], references: [id])
+  eventId     Int
+  createdAt   DateTime  @default(now())
+
+  @@map("eventsPhotos")
+}
+
+model EventsPix {
+  id          Int       @id @default(autoincrement())
+  key         String
+  event       Events    @relation(fields: [eventId], references: [id])
+  eventId     Int
+  createdAt   DateTime  @default(now())
+
+  @@map("eventsPix")
+}
+
+model EventsBankAccounts {
+  id              Int       @id @default(autoincrement())
+  agency          String
+  account         String
+  bank            String
+  holderName      String
+  event           Events    @relation(fields: [eventId], references: [id])
+  eventId         Int
+  createdAt       DateTime  @default(now())
+  bankAccountsCpf BankAccountsCpfs[]
+
+  @@map("eventsBankAccounts")
+}
+
+model BankAccountsCpfs {
+  id            Int                 @id @default(autoincrement())
+  cpf           String
+  bankAccount   EventsBankAccounts  @relation(fields: [bankAccountId], references: [id])
+  bankAccountId Int
+  createdAt     DateTime            @default(now())
+
+  @@map("bankAccountsCpf")
+}
+
+
