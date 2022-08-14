@@ -11,6 +11,16 @@ async function create(userId: number, eventId: number, ticketHash: string, payme
     });
 }
 
+async function getByHash(ticketHash: string) {
+    const ticket = await prisma.tickets.findFirst({
+        where: {
+            ticket: ticketHash
+        }
+    });
+    return ticket;
+}
+
 export default {
-    create
+    create,
+    getByHash
 }
