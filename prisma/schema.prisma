@@ -17,6 +17,7 @@ model Users {
   password    String
   createdAt   DateTime  @default(now())
   events      Events[]
+  tickets     Tickets[]
 
   @@map("users")
 }
@@ -33,6 +34,7 @@ model Events {
   eventsPhotos       EventsPhotos[]
   eventsPix          EventsPix[]
   eventsBankAccounts EventsBankAccounts[]
+  tickets            Tickets[]
 
   @@map("events")
 }
@@ -79,6 +81,18 @@ model BankAccountsCpfs {
   createdAt     DateTime            @default(now())
 
   @@map("bankAccountsCpf")
+}
+
+model Tickets {
+  id             Int     @id @default(autoincrement())
+  ticket         String  @unique
+  paymentVoucher String  @unique
+  event          Events  @relation(fields: [eventId], references: [id])
+  eventId        Int
+  user           Users   @relation(fields: [userId], references: [id])
+  userId         Int
+
+  @@map("tickets")
 }
 
 
