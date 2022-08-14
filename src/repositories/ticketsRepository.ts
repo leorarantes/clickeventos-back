@@ -1,4 +1,4 @@
-import { getTicketData } from "../controllers/ticketsController.js";
+import { getTicketData, myTicketData } from "../controllers/ticketsController.js";
 import prisma from "../database.js";
 
 async function create(userId: number, eventId: number, ticketHash: string, paymentVoucher: string) {
@@ -22,7 +22,7 @@ async function getByHash(ticketHash: string) {
 }
 
 async function getByEventId(eventId: number) {
-    const tickets: Array<getTicketData> = (await prisma.tickets.findMany({
+    const tickets: Array<getTicketData> = await prisma.tickets.findMany({
         where: {
             eventId
         },
@@ -35,13 +35,30 @@ async function getByEventId(eventId: number) {
             }
         },
         orderBy: {
-            createdAt: 'desc'
+            id: 'desc'
         }
-    })).map((ticket: {paymentVoucher: string, user: {name: string}}) => {
-        return {
-            holderName: ticket.user.name,
-            paymentVoucher: ticket.paymentVoucher
-        };
+    });
+    return tickets;
+}
+
+async function getByUserId(userId: number) {
+    const tickets: Array<myTicketData> = await prisma.tickets.findMany({
+        where: {
+            userId
+        },
+        select: {
+            ticket: true,
+            paymentVoucher: true,
+            event: {
+                select: {
+                    name: true,
+                    dateTime: true
+                }
+            }
+        },
+        orderBy: {
+            eventId: 'desc'
+        }
     });
     return tickets;
 }
@@ -49,5 +66,6 @@ async function getByEventId(eventId: number) {
 export default {
     create,
     getByHash,
-    getByEventId
+    getByEventId,
+    getByUserId
 }
