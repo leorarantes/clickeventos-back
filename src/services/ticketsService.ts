@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Tickets } from "@prisma/client";
 
-import { createTicketData } from "../controllers/ticketsController";
+import { createTicketData, getTicketData } from "../controllers/ticketsController";
 import ticketsRepository from "../repositories/ticketsRepository";
 
 export async function create(userId: number, ticket: createTicketData) {
@@ -21,4 +21,9 @@ export async function create(userId: number, ticket: createTicketData) {
     }
 
     await ticketsRepository.create(userId, eventId, ticketHash, paymentVoucher);
+}
+
+export async function getByEventId(eventId: string) {
+    const tickets: Array<getTicketData> = await ticketsRepository.getByEventId(parseInt(eventId));
+    return tickets;
 }
