@@ -14,6 +14,11 @@ export async function get() {
     return events;
 }
 
+export async function getById(id: string) {
+    const event: Events = await eventsRepository.getById(parseInt(id));
+    return event;
+}
+
 export async function getByManagerId(managerId: number) {
     // ensure manager exists
     await usersUtil.ensureUserExists(managerId);

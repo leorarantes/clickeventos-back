@@ -25,6 +25,12 @@ export async function get(req: Request, res: Response) {
     res.status(200).send(events);
 };
 
+export async function getById(req: Request, res: Response) {
+    const id: string = req.params.id;
+    const event: Events = await eventsService.getById(id);
+    res.status(200).send(event);
+};
+
 export async function getByManagerId(req: Request, res: Response) {
     const managerId: number = res.locals.id;
     const events: Array<Events> = await eventsService.getByManagerId(managerId);

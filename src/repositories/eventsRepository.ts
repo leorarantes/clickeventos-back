@@ -6,6 +6,11 @@ async function get() {
     return events;
 }
 
+async function getById(id: number) {
+    const event: Events = await prisma.events.findFirst();
+    return event;
+}
+
 async function getByManagerId(managerId: number) {
     const events: Array<Events> = await prisma.events.findMany({
         where: {
@@ -31,6 +36,7 @@ async function create(name: string, price: number, dateTime: Date, location:stri
 
 export default {
     get,
+    getById,
     getByManagerId,
     create
 }
