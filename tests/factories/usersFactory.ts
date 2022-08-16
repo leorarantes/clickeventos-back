@@ -1,9 +1,13 @@
+import supertest from 'supertest';
 import { faker } from '@faker-js/faker';
 import bcrypt from "bcrypt";
 
-import { SignUpData } from "../../src/controllers/authController.js";
+import { SignInData, SignUpData } from "../../src/controllers/authController.js";
 
 import prisma from "../../src/database.js";
+import app from "../../src/app";
+
+const agent = supertest(app);
 
 export function generateRandomUser() {
     const id = 0;
@@ -37,4 +41,10 @@ export async function createUser(user: SignUpData) {
             password: bcrypt.hashSync(user.password, 14)
         }
     });
+}
+
+export async function getToken(email: string, password: string) {
+    const response = await agent.post("/sign-in").send({ email, password });
+    const token = response.body;
+    return token;
 }

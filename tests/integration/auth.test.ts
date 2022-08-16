@@ -19,7 +19,7 @@ describe("POST /sign-up", () => {
         const response = await agent
             .post("/sign-up")
             .send(user);
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
     });
 
     it("given email already in use, fail to create user", async () => {
@@ -65,7 +65,7 @@ describe("POST /sign-in", () => {
         const user = insertAndGet();
         await createUser(user);
         const response = await agent.post("/sign-in").send({ email: user.email, password: user.password });
-        expect(response.status).toBe(201);
+        expect(response.status).toBe(200);
     });
 
     it("given invalid email and password, fail to receive token", async () => {

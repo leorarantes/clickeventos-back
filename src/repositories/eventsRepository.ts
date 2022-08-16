@@ -7,7 +7,11 @@ async function get() {
 }
 
 async function getById(id: number) {
-    const event: Events = await prisma.events.findFirst();
+    const event: Events = await prisma.events.findFirst({
+        where: {
+            id
+        }
+    });
     return event;
 }
 

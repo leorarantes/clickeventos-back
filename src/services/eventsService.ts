@@ -16,6 +16,7 @@ export async function get() {
 
 export async function getById(id: string) {
     const event: Events = await eventsRepository.getById(parseInt(id));
+    if(!event) throw { type: "error_not_found", message: "Event doesnt exist." };
     return event;
 }
 

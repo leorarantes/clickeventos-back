@@ -39,7 +39,7 @@ model Events {
 
 model EventsPhotos {
   id        Int      @id @default(autoincrement())
-  photo     String   @unique
+  photo     String
   event     Events   @relation(fields: [eventId], references: [id])
   eventId   Int
   createdAt DateTime @default(now())

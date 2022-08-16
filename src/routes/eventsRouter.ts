@@ -8,7 +8,7 @@ import { eventSchema } from "../schemas/eventSchema.js";
 const eventsRouter = Router();
 
 eventsRouter.get('/events', validateToken, get);
-eventsRouter.get('/events/:id', validateToken, getById);
+eventsRouter.get('/events/id/:id', validateToken, getById);
 eventsRouter.get('/events/from-manager', validateToken, getByManagerId);
 eventsRouter.post('/events', validateSchema(eventSchema), validateToken, create);
 

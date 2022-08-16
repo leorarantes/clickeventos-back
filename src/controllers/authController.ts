@@ -17,11 +17,11 @@ export interface SignInData {
 export async function signUp(req: Request, res: Response) {
     const user: SignUpData = req.body;
     await authService.signUp(user);
-    res.sendStatus(200);
+    res.sendStatus(201);
 };
 
 export async function signIn(req: Request, res: Response) {
     const user: SignInData = req.body;
     const token = await authService.signIn(user);
-    res.status(201).send(token);
+    res.status(200).send(token);
 };

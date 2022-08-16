@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import "../setup.js";
 
 export async function validateToken(req, res, next) {
-    const authorization = req.headers.authorization || "";
+    const authorization = req.header("Authorization");
     const token = authorization.replace("Bearer ", "");
 
     if (!token) {
