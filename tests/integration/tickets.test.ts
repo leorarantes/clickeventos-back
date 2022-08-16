@@ -86,3 +86,13 @@ describe("GET /tickets/from-user", () => {
         expect(response.status).toBe(401);
     });
 });
+
+afterAll(async () => {
+    await prisma.$executeRaw`DELETE FROM tickets WHERE "eventId" = ${ticket.eventId}`;
+    await prisma.$executeRaw`DELETE FROM "eventsPhotos" WHERE photo = ${eventInfo.photo}`;
+    await prisma.$executeRaw`DELETE FROM "eventsPix" WHERE key = ${eventInfo.pixKey}`;
+    await prisma.$executeRaw`DELETE FROM "bankAccountsCpf" WHERE cpf = ${eventInfo.transfer.bankAccountCpf}`;
+    await prisma.$executeRaw`DELETE FROM "eventsBankAccounts" WHERE account = ${eventInfo.transfer.bankAccount}`;
+    await prisma.$executeRaw`DELETE FROM events WHERE name = ${eventInfo.name}`;
+    await prisma.$executeRaw`DELETE FROM users WHERE email = ${user.email}`;
+});

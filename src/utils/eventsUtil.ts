@@ -1,3 +1,6 @@
+import { Events } from "@prisma/client";
+import eventsRepository from "../repositories/eventsRepository";
+
 function getTimestamp(date: string, time: string) {
     let dateTime: Date = new Date();
 
@@ -16,6 +19,13 @@ function getTimestamp(date: string, time: string) {
     return dateTime;
 }
 
+async function ensureEventExistsAndGetData(id: number) {
+    const event: Events = await eventsRepository.getById(id);
+    if(!event) throw { type: "error_not_found", message: "Event doesnt exist." };
+    return event;
+}
+
 export default {
-    getTimestamp
+    getTimestamp,
+    ensureEventExistsAndGetData
 }

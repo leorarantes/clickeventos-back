@@ -8,7 +8,7 @@ import { ticketSchema } from "../schemas/ticketSchema.js";
 const ticketsRouter = Router();
 
 ticketsRouter.post('/tickets', validateSchema(ticketSchema), validateToken, create);
-ticketsRouter.get('/tickets/event/:eventId', validateSchema(ticketSchema), validateToken, getByEventId);
+ticketsRouter.get('/tickets/event/:eventId', validateToken, getByEventId);
 ticketsRouter.get('/tickets/from-user', validateToken, getByUserId);
 
 export default ticketsRouter;

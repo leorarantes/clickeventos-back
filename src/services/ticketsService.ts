@@ -3,6 +3,8 @@ import { Tickets } from "@prisma/client";
 
 import { createTicketData, getTicketData, myTicketData } from "../controllers/ticketsController";
 import ticketsRepository from "../repositories/ticketsRepository";
+import eventsUtil from "../utils/eventsUtil";
+import usersUtil from "../utils/usersUtil";
 
 export async function create(userId: number, ticket: createTicketData) {
     const {eventId, paymentVoucher}: createTicketData = ticket;
@@ -24,11 +26,13 @@ export async function create(userId: number, ticket: createTicketData) {
 }
 
 export async function getByEventId(eventId: string) {
+    await eventsUtil.ensureEventExistsAndGetData(parseInt(eventId));
     const tickets: Array<getTicketData> = await ticketsRepository.getByEventId(parseInt(eventId));
     return tickets;
 }
 
 export async function getByUserId(userId: number) {
+    await usersUtil.ensureUserExists(userId);
     const tickets: Array<myTicketData> = await ticketsRepository.getByUserId(userId);
     return tickets;
 }

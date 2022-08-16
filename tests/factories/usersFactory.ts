@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { SignInData, SignUpData } from "../../src/controllers/authController.js";
-import "../setup.js";
+import "../../src/setup.js";
 
 import prisma from "../../src/database.js";
 import app from "../../src/app";
