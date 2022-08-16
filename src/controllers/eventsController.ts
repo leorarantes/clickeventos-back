@@ -7,6 +7,7 @@ export interface createEventData {
     price: number,
     date: string,
     time: string,
+    location: string,
     photo: string,
     pixKey: string,
     transfer: {

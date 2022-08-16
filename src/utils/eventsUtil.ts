@@ -1,7 +1,7 @@
 function getTimestamp(date: string, time: string) {
     let dateTime: Date = new Date();
 
-    if(parseInt(date.slice(0, 2)) > 31) 
+    if(parseInt(date.slice(0, 2)) > 31) throw { type: "error_unprocessable_entity", message: "Invalid date."};
 
     // set date
     dateTime.setDate(parseInt(date.slice(0, 2)));

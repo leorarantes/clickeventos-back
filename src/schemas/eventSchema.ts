@@ -5,6 +5,7 @@ export const eventSchema = joi.object({
     price: joi.number().required(),
     date: joi.string().pattern(/[0-9]{8}/),
     time: joi.string().pattern(/[0-9]{4}/),
+    location: joi.string().required(),
     photo: joi.string(),
     pixKey: joi.string(),
     transfer: joi.object({

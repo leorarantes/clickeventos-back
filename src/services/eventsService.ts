@@ -23,7 +23,7 @@ export async function getByManagerId(managerId: number) {
 }
 
 export async function create(managerId: number, eventData: createEventData) {
-    const {name, price, date, time, photo, pixKey, description} = eventData;
+    const {name, price, date, time, location, photo, pixKey, description} = eventData;
     const {bankAgency, bankAccount, bankAccountHolder, bank, bankAccountCpf} = eventData.transfer;
     
     // ensure manager exists
@@ -31,7 +31,7 @@ export async function create(managerId: number, eventData: createEventData) {
 
     const dateTime: Date = eventsUtil.getTimestamp(date, time);
 
-    const event = await eventsRepository.create(name, price, dateTime, description, managerId); 
+    const event = await eventsRepository.create(name, price, dateTime, location, description, managerId); 
     
     if(photo.length !== 0) await eventsPhotosRepository.create(event.id, photo);
     if(pixKey.length !== 0) await eventsPixRepository.create(event.id, pixKey);

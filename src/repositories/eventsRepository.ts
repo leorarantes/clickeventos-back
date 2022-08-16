@@ -15,12 +15,13 @@ async function getByManagerId(managerId: number) {
     return events;
 }
 
-async function create(name: string, price: number, dateTime: Date, description: string, managerId: number) {
+async function create(name: string, price: number, dateTime: Date, location:string, description: string, managerId: number) {
     const event: Events = await prisma.events.create({
         data: {
             name,
             price,
             dateTime,
+            location,
             description,
             managerId
         }
