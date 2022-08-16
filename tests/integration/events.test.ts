@@ -3,34 +3,17 @@ import supertest from 'supertest';
 import prisma from "../../src/database.js";
 import app from "../../src/app";
 import { createUser, generateRandomUser, getToken } from '../factories/usersFactory';
+import { testEvent } from '../factories/eventsFactory.js';
 
 const agent = supertest(app);
 
-const event = {
-    name: "Summer Barbecue",
-    price: 20.00,
-    date: "31122022",
-    time: "1500",
-    location: "Peter's house",
-    photo: "photo_url",
-    pixKey: "peter@test.com",
-    transfer: {
-        bankAgency: "0000-0",
-        bankAccount: "00.000-0",
-        bankAccountHolder: "Peter Junior",
-        bank: "HSBC",
-        bankAccountCpf: "000.000.000-00"
-    },
-    description: "Just a nice barbecue"
-}
-
+const event = testEvent;
 let events = [];
-
 let token = "";
-const user = generateRandomUser().create;
+let user: any;
 beforeAll(async () => {
-    await createUser(user);
-    token = (await getToken(user.email, user.password)).token;
+    user = await createUser(generateRandomUser().create);
+    token = getToken(user.id);
 });
 
 describe("POST /events", () => {
@@ -109,7 +92,7 @@ describe("GET /events/from-manager", () => {
         expect(response.body).toBeInstanceOf(Object);
     });
     
-    it("given invalid token, get events", async () => {
+    it("given invalid token, fail to get events", async () => {
         const response = await agent
             .get(`/events/from-manager`)
             .set("Authorization", "Bearer " + "invalid_token");
