@@ -1,5 +1,5 @@
 import { Events } from "@prisma/client";
-import eventsRepository from "../repositories/eventsRepository";
+import eventsRepository from "../repositories/eventsRepository.js";
 
 function getTimestamp(date: string, time: string) {
     let dateTime: Date = new Date();

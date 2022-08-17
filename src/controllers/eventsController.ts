@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Events } from "@prisma/client";
+
 import * as eventsService from "../services/eventsService.js";
 
 export interface createEventData {

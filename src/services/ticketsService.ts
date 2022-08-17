@@ -1,10 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { Tickets } from "@prisma/client";
 
-import { createTicketData, getTicketData, myTicketData } from "../controllers/ticketsController";
-import ticketsRepository from "../repositories/ticketsRepository";
-import eventsUtil from "../utils/eventsUtil";
-import usersUtil from "../utils/usersUtil";
+import { createTicketData, getTicketData, myTicketData } from "../controllers/ticketsController.js";
+import ticketsRepository from "../repositories/ticketsRepository.js";
+import eventsUtil from "../utils/eventsUtil.js";
+import usersUtil from "../utils/usersUtil.js";
 
 export async function create(userId: number, ticket: createTicketData) {
     const {eventId, paymentVoucher}: createTicketData = ticket;
