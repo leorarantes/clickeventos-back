@@ -20,7 +20,7 @@ export interface myTicketData {
     paymentVoucher: string,
     event: {
         name: string,
-        dateTime: Date
+        timestamp: Date
     }
 }
 

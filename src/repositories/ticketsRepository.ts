@@ -52,7 +52,7 @@ async function getByUserId(userId: number) {
             event: {
                 select: {
                     name: true,
-                    dateTime: true
+                    timestamp: true
                 }
             }
         },

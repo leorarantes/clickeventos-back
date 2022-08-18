@@ -24,7 +24,7 @@ model Events {
   name               String
   price              Float
   description        String
-  dateTime           DateTime
+  timestamp          DateTime
   location           String
   manager            Users                @relation(fields: [managerId], references: [id])
   managerId          Int

@@ -2,7 +2,15 @@ import { Events } from "@prisma/client";
 import prisma from "../database.js";
 
 async function get() {
-    const events: Array<Events> = await prisma.events.findMany();
+    const events: Array<Events> = await prisma.events.findMany({
+        include: {
+            eventsPhotos: {
+                select: {
+                    photo: true
+                }
+            }
+        }
+    });
     return events;
 }
 
@@ -24,12 +32,12 @@ async function getByManagerId(managerId: number) {
     return events;
 }
 
-async function create(name: string, price: number, dateTime: Date, location:string, description: string, managerId: number) {
+async function create(name: string, price: number, timestamp: Date, location:string, description: string, managerId: number) {
     const event: Events = await prisma.events.create({
         data: {
             name,
             price,
-            dateTime,
+            timestamp,
             location,
             description,
             managerId
